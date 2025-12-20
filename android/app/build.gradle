@@ -1,0 +1,90 @@
+plugins {
+    id "com.android.application"
+    id "kotlin-android"
+    id "dev.flutter.flutter-gradle-plugin"
+}
+
+// Load properties from key.properties
+def localProperties = new Properties()
+def localPropertiesFile = rootProject.file('local.properties')
+if (localPropertiesFile.exists()) {
+    localProperties.load(new FileInputStream(localPropertiesFile))
+}
+
+def flutterRoot = localProperties.getProperty('flutter.sdk')
+if (flutterRoot == null) {
+    throw new GradleException("Flutter SDK not found. Define location with flutter.sdk in the local.properties file.")
+}
+
+
+def signingPropertiesFile = rootProject.file("key.properties")
+if (signingPropertiesFile.exists()) {
+    def props = new Properties()
+    props.load(new FileInputStream(signingPropertiesFile))
+
+    // Check if the signingConfigs block exists, if not, create it
+    if (!android.signingConfigs.findByName("release")) {
+        android.signingConfigs.create("release") {
+            keyAlias props['keyAlias']
+            keyPassword props['keyPassword']
+            storeFile file(props['storeFile'])
+            storePassword props['storePassword']
+        }
+    }
+}
+
+android {
+    namespace = "com.example.qr_scanner_app"
+    compileSdk = 35 
+    // compileSdk = flutter.compileSdkVersion
+    ndkVersion = "26.1.10909125"
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+        coreLibraryDesugaringEnabled true
+    }
+
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8
+    }
+
+    defaultConfig {
+        applicationId = "com.example.qr_scanner_app"
+        minSdk = flutter.minSdkVersion
+        // targetSdk = flutter.targetSdkVersion
+        targetSdk = 35 
+        versionCode = flutter.versionCode
+        versionName = flutter.versionName
+
+        manifestPlaceholders += [
+            appAuthRedirectScheme: 'com.example.qr_scanner_app'
+        ]
+    }
+
+    buildTypes {
+        release {
+           
+            if (android.signingConfigs.findByName("release")) {
+                signingConfig signingConfigs.release
+            } else {
+           
+                signingConfig signingConfigs.debug
+            }
+            
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+flutter {
+    source = "../.."
+}
+dependencies {
+    implementation "androidx.core:core-ktx:1.12.0"
+
+    // Required for flutter_local_notifications (Java 8+ APIs like java.time)
+    coreLibraryDesugaring "com.android.tools:desugar_jdk_libs:2.0.4"
+}

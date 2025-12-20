@@ -1,0 +1,21 @@
+import 'dart:ui';
+
+const Color gray = Color(0xFF7A7A7A);
+const Color fontLight = Color(0xFF4F4F4F);
+const Color lightGray = Color(0xFFEFF1F5);
+const Color lightBlack = Color(0xFF1C1C1C);
+const Color darkBlack = Color(0xFF1C1B1F);
+const Color backgroundColors = Color(0xFFF6DFF7);
+// const Color primaryColor = Color.fromARGB(255, 23, 136, 23);
+const Color primaryColor = Color(0xFF008000);
+const Color likeColour = Color(0xFF4F4F4F);
+const Color searchColor = Color(0xFFACACAC);
+const Color iconColor = Color(0xFF0F172A);
+const Color lightColor = Color(0xFFEBEBEB);
+const Color dividerColor = Color(0xFFD9D9D9);
+const Color optionBorderColor = Color(0xFFE7AEEB);
+const Color replyColor = Color(0xFF4C41AA);
+const Color notificationColor = Color(0xFFD90D0D);
+const Color greenGraph = Color(0xFFABD178);
+const Color redGraph = Color(0xFFF9845D);
+const Color yellowGraph = Color(0xFFFFDE00);

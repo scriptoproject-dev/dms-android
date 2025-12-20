@@ -1,0 +1,58 @@
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+ 
+rootProject.buildDir = '../build'
+subprojects {
+    project.buildDir = "${rootProject.buildDir}/${project.name}"
+ 
+    afterEvaluate { project ->
+    if (project.hasProperty("android")) {
+        project.android {
+            // ✅ Ensure compileSdk is set
+            if (project.android.hasProperty("compileSdk")) {
+                project.android.compileSdk = 35
+            } else if (project.android.hasProperty("compileSdkVersion")) {
+                project.android.compileSdkVersion = 35
+            }
+
+            if (!project.android.hasProperty("namespace") || project.android.namespace == null) {
+                def manifestFile = file("${project.projectDir}/src/main/AndroidManifest.xml")
+                if (manifestFile.exists()) {
+                    def matcher = manifestFile.getText() =~ /package="(.*?)"/
+                    if (matcher.find()) {
+                        namespace matcher.group(1)
+                    } else {
+                        namespace "com.${project.name}"
+                    }
+                } else {
+                    namespace "com.${project.name}"
+                }
+            }
+
+            compileOptions {
+                sourceCompatibility JavaVersion.VERSION_17
+                targetCompatibility JavaVersion.VERSION_17
+            }
+            tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
+                kotlinOptions {
+                    jvmTarget = "17"
+                }
+            }
+        }
+    }
+
+    }
+}
+ 
+ 
+subprojects {
+    project.evaluationDependsOn(':app')
+}
+ 
+tasks.register("clean", Delete) {
+    delete rootProject.buildDir
+}
