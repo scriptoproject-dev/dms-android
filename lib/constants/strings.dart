@@ -95,8 +95,8 @@ class Strings {
   // static String baseUrl = 'http://10.10.2.170:8000/api/';
 
   // Staging
-  // static String baseUrl = 'http://10.10.5.55:9000/api/';
-  static String baseUrl = 'http://52.66.245.19:8000/';
+  static String baseUrl = 'http://10.144.210.217:8000/api/';
+  // static String baseUrl = 'http://52.66.245.19:8000/';
 
   static const String keycloakUrl = 'http://10.10.5.55:3000/';
 
